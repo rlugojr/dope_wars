@@ -12,7 +12,15 @@ Inventory.prototype.add = function(name, quantity){
 };
 
 Inventory.prototype.remove = function(name, quantity){
-	this.items.forEach(function(item){ if(item.name === name) item.quantity -= quantity;});
+	this.items.forEach(function(item){ 
+		if(item.name === name) {
+			if(item.quantity - quantity < 0 ){
+				throw Error('tried to sell too many');
+			}else{
+				item.quantity -= quantity;	
+			}
+		}
+	});
 };
 
 Inventory.prototype.display = function(){

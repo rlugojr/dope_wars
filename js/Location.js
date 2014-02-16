@@ -20,7 +20,12 @@ Location.prototype.getItems = function(){
 Location.prototype.sell = function(name, qty){
 	this.market.forEach(function(item){
 		if(item.name === name){
-			item.quantity -= qty;
+			if(item.quantity - qty > -1){
+				item.quantity -= qty;	
+			}else{
+				throw Error('tried to buy too many items');
+			}
+			
 		}
 	});
 };
@@ -38,7 +43,7 @@ Location.prototype.buy = function(name, qty) {
 	if(marketItem !== null){
 		price = qty * marketItem.price;
 	}
-	
+
 	return price;
 };
 
