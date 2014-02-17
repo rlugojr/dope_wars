@@ -5,4 +5,5 @@ def ask(question, options):
 	answer = raw_input(fullQ)
 	for item in options:
 		if answer == item['code']:
-			item['callback']()
+			return item['callback']()
+	return ask(question, options)
