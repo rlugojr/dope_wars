@@ -14,11 +14,9 @@ Location.prototype.display = function(){
 };
 
 Location.prototype.getItems = function(){
-	return this.market;
-};
-
-Location.prototype.update = function(){
-	
+	return this.market.filter(function(item){
+		return item.quantity > 0;
+	});
 };
 
 Location.prototype.sell = function(name, qty){

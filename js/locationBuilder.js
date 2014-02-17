@@ -28,7 +28,15 @@ function getRandomPrice(product){
 }
 
 function getRandomQuantity(max){
-	return Math.round(Math.random()* max);
+
+	var chanceOfNone = 0.2;
+	var value = 0;
+
+	if(Math.random()>chanceOfNone){
+		value = Math.round(Math.random()* max);
+	}
+
+	return value;
 }
 
 module.exports = getLocations;
