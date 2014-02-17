@@ -77,7 +77,7 @@ Game.prototype.outputMovementOptions = function(){
 		};
 	}.bind(this));
 
-	options.push(this.getQuitAction());
+	options.push(this.getQuitAction('q'));
 
 	question.multi('Where would you like to go? ', options);
 };
