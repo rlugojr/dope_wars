@@ -40,14 +40,18 @@ Game.prototype.outputTradeOptions = function(){
 
 Game.prototype.buyQuantity = function(item){
 	question.ask('how many? ', function(answer){
-		try{
-			this.getLocation().sell(item.name, answer);
-			this.inventory.add(item.name, parseInt(answer, 10));
+		try{			
 			var price = item.price * answer;
+			
 			if(this.inventory.cash - price < 0){
 				console.log('not enough money');
 			}else{
+				// TODO : see below
+				//this.inventory.purchase(item.name, parseInt(answer, 10), price);
+				
 				this.inventory.cash -= item.price * answer;	
+				this.inventory.add(item.name, parseInt(answer, 10));
+				this.getLocation().sell(item.name, answer);
 			}
 			
 		}catch(e){
