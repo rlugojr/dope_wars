@@ -1,15 +1,20 @@
 var question = require('./question.js');
 
-function Game(playerName, locations, inventory){
+function Game(playerName, locations, inventory, turns){
 	this.playerName = playerName;
 	this.location = 0;
 	this.locations = locations;
 	this.inventory = inventory;
+	this.turns = turns;
+	this.currentDay = 0;
 }
 
 Game.prototype.day = function(){
+	this.currentDay++;
 	console.log('\n\n-----------------------------------');
 	console.log('Oh hai, ' + this.playerName + '!');
+	console.log('day ' + this.currentDay);
+	console.log('days left: ' + (this.turns - this.currentDay));
 	this.status();
 };
 
