@@ -1,0 +1,12 @@
+import os
+from Game import Game
+
+
+def start():
+	os.system('clear');
+	print 'dope wars py'
+	name = raw_input('what\'s your name?\n')
+	game = Game(name)
+	game.start()
+
+start()
