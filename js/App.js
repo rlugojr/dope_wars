@@ -13,7 +13,7 @@ function App(config){
 
 App.prototype.start = function(){
 	var inventory = new Inventory(this.startCash);
-	var locations = locationBuilder(this.places, this.products, this.maxProducts);
+	var locations = locationBuilder.bind(this, this.places, this.products, this.maxProducts);
 
 
 	console.log('Dope Wars JS\n');
@@ -21,7 +21,7 @@ App.prototype.start = function(){
 		var game = new Game(answer, locations, inventory, this.turns);
 
 		game.day();
-	});
+	}.bind(this));
 };
 
 module.exports = App;

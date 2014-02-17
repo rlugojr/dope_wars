@@ -3,7 +3,8 @@ var question = require('./question.js');
 function Game(playerName, locations, inventory, turns){
 	this.playerName = playerName;
 	this.location = 0;
-	this.locations = locations;
+	this.locations = locations();
+	this.locationBuilder = locations;
 	this.inventory = inventory;
 	this.turns = turns;
 	this.currentDay = 0;
@@ -12,6 +13,7 @@ function Game(playerName, locations, inventory, turns){
 Game.prototype.day = function(){
 	this.currentDay++;
 	if(this.currentDay < this.turns){
+		this.updateMarkets();
 		this.startDay();
 	}else{
 		this.gameOver();
@@ -23,14 +25,17 @@ Game.prototype.startDay = function(){
 	console.log('Oh hai, ' + this.playerName + '!');
 	console.log('day ' + this.currentDay);
 	console.log('days left: ' + (this.turns - this.currentDay));
+	this.mainLoop();
+};
+
+Game.prototype.mainLoop = function(){
 	this.status();
 	this.outputTradeOptions();
 };
 
 Game.prototype.gameOver = function(){
 	console.log('\nGame Over!!');
-	console.log('You earned £' + this.cash);
-	question.ask('press any key to exit', function(){});
+	console.log('You earned £' + this.cash + '\n');
 };
 
 Game.prototype.status = function(){
@@ -44,7 +49,7 @@ Game.prototype.status = function(){
 Game.prototype.outputTradeOptions = function(){
 
 	var purchaseOptions = this.getLocationItems(0);
-	purchaseOptions = purchaseOptions.concat(this.getInventoryItems(purchaseOptions.length - 1));
+	purchaseOptions = purchaseOptions.concat(this.getInventoryItems(purchaseOptions.length));
 	purchaseOptions.push(this.getTravelAction('m'));
 	purchaseOptions.push(this.getQuitAction('q'));
 
@@ -72,7 +77,7 @@ Game.prototype.buyQuantity = function(item){
 			console.log('there are not that many units available!\n');
 		}
 
-		this.status();
+		this.mainLoop();
 	}.bind(this));
 };
 
@@ -88,7 +93,7 @@ Game.prototype.sellQuantity = function(item){
 			console.log('there are not that many units available!\n');
 		}
 
-		this.status();
+		this.mainLoop();
 	}.bind(this));
 };
 
@@ -109,6 +114,10 @@ Game.prototype.outputMovementOptions = function(){
 	options.push(this.getQuitAction('q'));
 
 	question.multi('Where would you like to go? ', options);
+};
+
+Game.prototype.updateMarkets = function() {
+	this.locations = this.locationBuilder();
 };
 
 Game.prototype.updateLocation = function(location){

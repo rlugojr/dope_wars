@@ -26,6 +26,9 @@ Inventory.prototype.remove = function(name, quantity){
 Inventory.prototype.display = function(){
 	var output = 'cash : £' + this.cash + '\n';
 	this.items.forEach(function(item){
+		if(item.quantity === 0){
+			return;
+		}
 		output += item.name + ' : ' + item.quantity + '\n';
 	});
 
