@@ -43,7 +43,13 @@ Game.prototype.buyQuantity = function(item){
 		try{
 			this.getLocation().sell(item.name, answer);
 			this.inventory.add(item.name, parseInt(answer, 10));
-			this.inventory.cash -= item.price * answer;
+			var price = item.price * answer;
+			if(this.inventory.cash - price < 0){
+				console.log('not enough money');
+			}else{
+				this.inventory.cash -= item.price * answer;	
+			}
+			
 		}catch(e){
 			console.log('there are not that many units available!\n');
 		}
