@@ -17,6 +17,10 @@ Location.prototype.getItems = function(){
 	return this.market;
 };
 
+Location.prototype.update = function(){
+	
+};
+
 Location.prototype.sell = function(name, qty){
 	this.market.forEach(function(item){
 		if(item.name === name){

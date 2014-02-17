@@ -11,11 +11,26 @@ function Game(playerName, locations, inventory, turns){
 
 Game.prototype.day = function(){
 	this.currentDay++;
+	if(this.currentDay < this.turns){
+		this.startDay();
+	}else{
+		this.gameOver();
+	}
+};
+
+Game.prototype.startDay = function(){
 	console.log('\n\n-----------------------------------');
 	console.log('Oh hai, ' + this.playerName + '!');
 	console.log('day ' + this.currentDay);
 	console.log('days left: ' + (this.turns - this.currentDay));
 	this.status();
+	this.outputTradeOptions();
+};
+
+Game.prototype.gameOver = function(){
+	console.log('\nGame Over!!');
+	console.log('You earned £' + this.cash);
+	question.ask('press any key to exit', function(){});
 };
 
 Game.prototype.status = function(){
@@ -24,7 +39,6 @@ Game.prototype.status = function(){
 	console.log(this.inventory.display());
 	console.log(currentLocation.display());
 
-	this.outputTradeOptions();
 };
 
 Game.prototype.outputTradeOptions = function(){
@@ -48,7 +62,7 @@ Game.prototype.buyQuantity = function(item){
 			}else{
 				// TODO : see below
 				//this.inventory.purchase(item.name, parseInt(answer, 10), price);
-				
+
 				this.inventory.cash -= item.price * answer;	
 				this.inventory.add(item.name, parseInt(answer, 10));
 				this.getLocation().sell(item.name, answer);
