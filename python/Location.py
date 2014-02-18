@@ -5,4 +5,4 @@ class Location:
 		self.market = market
 	def display(self):
 		for product in self.market:
-			print(product['name'] + ':\t' + '£' + str(product['price']) + '\t' + str(product['quantity']))
+			print '{0}:\t£{1}\t{2}'.format(product['name'], product['price'], product['quantity'])

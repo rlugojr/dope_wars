@@ -4,9 +4,9 @@ class Inventory:
 		self.cash = cash
 		self.items = []
 	def display(self):
-		print 'Cash: £' + str(self.cash)
+		print 'Cash: £{0}'.format(self.cash)
 		for item in self.items:
-			print item['name'] + ':\t' + str(item['quantity'])
+			print '{0}:\t{1}'.format(item['name'], item['quantity'])
 	def add(self, product, qty):
 		exists = False
 		for item in self.items:

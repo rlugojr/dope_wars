@@ -17,11 +17,10 @@ class Game:
 	def start(self):
 		self.currentDay += 1
 		location = self.getLocation()
-		print 'Oh hai ' + self.name + '!'
-		print str(self.maxDays - self.currentDay) + ' days left!'
-		print 'Location: ' + location.name
+		print 'Oh hai {0}!'.format(self.name)
+		print '{0} days left!'.format(self.maxDays - self.currentDay)
+		print 'Location: {0}'.format(location.name)
 		self.mainLoop()
-		#ask('would you like?', options)
 
 	def mainLoop(self):
 		self.inventory.display() 
@@ -74,10 +73,10 @@ class Game:
 			product['quantity'] -= qty
 		elif(self.inventory.cash < price):
 			print 'insufficient funds'
-			print 'you only have £' + str(self.inventory.cash) + ', but transaction costs £' + str(price)
+			print 'you only have £{0}, but transaction costs £{1}'.format(self.inventory.cash, price)
 		else:
 			print 'not that many available'
-			print 'you want ' + str(qty) + ', but there are only ' + str(product['quantity'])
+			print 'you want {0}, but there are only {1} units'.format(qty, product['quantity'])
 		self.mainLoop()
 		
 
