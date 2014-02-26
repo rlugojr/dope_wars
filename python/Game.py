@@ -117,4 +117,5 @@ def getPrice(product):
 	return randrange(product['min'], product['max'], 1)
 
 def getQuantity():
-	return 10
+	MAX_QTY = 100
+	return randrange(0, 100, 1)
