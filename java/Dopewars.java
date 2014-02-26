@@ -10,8 +10,8 @@ public class Dopewars {
         ReadLine reader = new ReadLine();
         String input = reader.read();
 
-		Game game = new Game(input);
-		game.start();
+        Game game = new Game(input);
+        game.start();
     }
 
 }
