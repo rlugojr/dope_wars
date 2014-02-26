@@ -59,14 +59,20 @@ class Game:
 
 	def getPurchaseClosure(self, product):
 		def cb():
-			qty = raw_input('how many?\n')
-			self.purchase(product, int(qty))
+			qty = raw_input('how many? ({0} available)\n'.format(product['quantity']))
+			if qty.isdigit():
+				self.purchase(product, int(qty))
+			else:
+				cb()
 		return cb
 
 	def getSaleClosure(self, product):
 		def cb():
-			qty = raw_input('how many?\n')
-			self.sell(product, int(qty))
+			qty = raw_input('how many? ({0} available)\n'.format(product['quantity']))
+			if qty.isdigit():
+				self.sell(product, int(qty))
+			else:
+				cb()
 		return cb
 
 	def exit(self):
@@ -77,6 +83,8 @@ class Game:
 		code = 0
 		options = []
 		for location in self.locations:
+			if location is self.getLocation():
+				continue
 			option = {'code': str(code), 'description':location.name, 'callback':self.getMovementClosure(location)}
 			options.append(option)
 			code += 1
@@ -91,6 +99,7 @@ class Game:
 		self.currentLocation = self.locations.index(location)
 		self.start()
 	def purchase(self, product, qty):
+		os.system('clear')
 		price = product['price'] * qty
 		if(self.inventory.cash >= price and product['quantity'] >= qty):
 			self.inventory.cash -= price
@@ -106,17 +115,21 @@ class Game:
 		self.mainLoop()
 	
 	def sell(self, product, qty):
+		os.system('clear')
 		location = self.getLocation()
 		productPrice = 0
 		for lProduct in location.market:
 			if product['name'] == lProduct['name']:
 				selectedProduct = lProduct
 				productPrice = lProduct['price']
+				break
 		price = productPrice * qty
 		if(product['quantity'] >= qty):
 			selectedProduct['quantity'] += qty
 			product['quantity'] -= qty
 			self.inventory.cash += price
+			if product['quantity'] < 1:
+				self.inventory.items.remove(product)
 			print 'you sold {0} units of {1} for £{2}'.format(qty, product['name'], price)
 		else:
 			print 'you don\'t have that many units of {0}'.format(product['name'])
