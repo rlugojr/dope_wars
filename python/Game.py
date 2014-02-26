@@ -6,7 +6,7 @@ from Inventory import Inventory
 
 
 class Game:
-	maxDays = 30
+	maxDays = 3
 	currentDay = 0
 	currentLocation = 0
 	def __init__(self, name, locations, cash, products):
@@ -20,12 +20,18 @@ class Game:
 		print 'Oh hai {0}!'.format(self.name)
 		print '{0} days left!'.format(self.maxDays - self.currentDay)
 		print 'Location: {0}'.format(location.name)
+		if(self.currentDay >= self.maxDays):
+			return self.gameOver()
 		self.mainLoop()
 
-	def mainLoop(self):
+	def mainLoop(self):		
 		self.inventory.display() 
 		self.getLocation().display()
 		self.getTradeOptions()
+
+	def gameOver(self):
+		print 'Game Over!'
+		print 'You made £{0}'.format(self.inventory.cash)
 
 	def getLocation(self):
 		return self.locations[self.currentLocation]
