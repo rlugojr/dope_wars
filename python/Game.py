@@ -3,16 +3,19 @@ import os
 from multiChoice import ask
 from Location import Location
 from Inventory import Inventory
+from random import randrange
 
 
 class Game:
-	maxDays = 3
+	
 	currentDay = 0
 	currentLocation = 0
-	def __init__(self, name, locations, cash, products):
+	def __init__(self, name, locations, cash, products, days):
+		self.maxDays = days
 		self.locations = getLocations(locations, products)
 		self.name = name;
 		self.inventory = Inventory(cash)
+		self.startingCash = cash
 
 	def start(self):
 		self.currentDay += 1
@@ -31,7 +34,8 @@ class Game:
 
 	def gameOver(self):
 		print 'Game Over!'
-		print 'You made £{0}'.format(self.inventory.cash)
+		print 'You finished with £{0}'.format(self.inventory.cash)
+		print 'Minus the £{0} you have to repay your mum, that\'s £{1}!'.format(self.startingCash, self.inventory.cash - self.startingCash)
 
 	def getLocation(self):
 		return self.locations[self.currentLocation]
@@ -110,7 +114,7 @@ def setupProducts(productDefs):
 
 
 def getPrice(product):
-	return 10
+	return randrange(product['min'], product['max'], 1)
 
 def getQuantity():
 	return 10
