@@ -3,7 +3,6 @@ import os
 from multiChoice import ask
 from Location import Location
 from Inventory import Inventory
-from random import randrange
 
 
 class Game:
@@ -20,6 +19,8 @@ class Game:
 	def start(self):
 		self.currentDay += 1
 		location = self.getLocation()
+		location.update()
+		os.system('clear')
 		print 'Oh hai {0}!'.format(self.name)
 		print '{0} days left!'.format(self.maxDays - self.currentDay)
 		print 'Location: {0}'.format(location.name)
@@ -45,20 +46,33 @@ class Game:
 		options = []
 		location = self.getLocation()
 		for product in location.market:
-			option = {'code': str(code), 'description':product['name'], 'callback':self.getPurchaseClosure(product)}
+			option = {'code': str(code), 'description':'buy {0}'.format(product['name']), 'callback':self.getPurchaseClosure(product)}
+			options.append(option)
+			code += 1
+		for product in self.inventory.items:
+			option = {'code': str(code), 'description':'sell {0}'.format(product['name']), 'callback':self.getSaleClosure(product)}
 			options.append(option)
 			code += 1
 		options.append({'code':'m', 'description':'check out a different area', 'callback':self.travel})
 		options.append({'code':'q', 'description':'quit', 'callback':self.exit})
 		ask('Would you like to trade?', options)
+
 	def getPurchaseClosure(self, product):
 		def cb():
 			qty = raw_input('how many?\n')
 			self.purchase(product, int(qty))
 		return cb
+
+	def getSaleClosure(self, product):
+		def cb():
+			qty = raw_input('how many?\n')
+			self.sell(product, int(qty))
+		return cb
+
 	def exit(self):
 		print 'goodbye!'
-		os._exit(0)	
+		os._exit(0)
+
 	def travel(self):
 		code = 0
 		options = []
@@ -68,6 +82,7 @@ class Game:
 			code += 1
 		options.append({'code':'q', 'description':'quit', 'callback':self.exit})
 		ask('Where would you like to go?', options)
+
 	def getMovementClosure(self, location):
 		def cb():
 			self.moveTo(location)
@@ -81,6 +96,7 @@ class Game:
 			self.inventory.cash -= price
 			self.inventory.add(product['name'], qty)
 			product['quantity'] -= qty
+			print 'you bought {0} units of {1} at a cost of £{2}'.format(qty, product['name'], price)
 		elif(self.inventory.cash < price):
 			print 'insufficient funds'
 			print 'you only have £{0}, but transaction costs £{1}'.format(self.inventory.cash, price)
@@ -88,34 +104,29 @@ class Game:
 			print 'not that many available'
 			print 'you want {0}, but there are only {1} units'.format(qty, product['quantity'])
 		self.mainLoop()
-		
+	
+	def sell(self, product, qty):
+		location = self.getLocation()
+		productPrice = 0
+		for lProduct in location.market:
+			if product['name'] == lProduct['name']:
+				selectedProduct = lProduct
+				productPrice = lProduct['price']
+		price = productPrice * qty
+		if(product['quantity'] >= qty):
+			selectedProduct['quantity'] += qty
+			product['quantity'] -= qty
+			self.inventory.cash += price
+			print 'you sold {0} units of {1} for £{2}'.format(qty, product['name'], price)
+		else:
+			print 'you don\'t have that many units of {0}'.format(product['name'])
+		self.mainLoop()
 
 
-""" location builder functions """
+""" location builder """
 
 def getLocations(locationNames, products):	
 	locationList = []
 	for location in locationNames:
-		productList = setupProducts(products)
-		locationList.append(Location(location, productList))
+		locationList.append(Location(location, products))
 	return locationList
-
-def setupProducts(productDefs):
-	products = []
-	for product in productDefs:
-		products.append({
-				'name': product['name'],
-				'price': getPrice(product),
-				'quantity':getQuantity(),
-				'min':product['min'],
-				'max':product['max']
-			})
-	return products
-
-
-def getPrice(product):
-	return randrange(product['min'], product['max'], 1)
-
-def getQuantity():
-	MAX_QTY = 100
-	return randrange(0, 100, 1)
