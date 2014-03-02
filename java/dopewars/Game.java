@@ -2,6 +2,7 @@ package dopewars;
 
 import dopewars.Day;
 import dopewars.location.Mover;
+import dopewars.location.LocationChoiceBuilder;
 
 public class Game {
 
@@ -9,6 +10,8 @@ public class Game {
 	private Location[] allLocations;
 	private Location currentLocation;
 	private int currentDay;
+	private Mover mover;
+	private LocationChoiceBuilder locationChoiceBuilder;
 
 	public Game(String playerName, Location[] locations){
 		name = playerName;
@@ -22,17 +25,17 @@ public class Game {
 		String greeting = String.format("Hi, %s!", name);
 		System.out.println(greeting);
 
-		nextDay(currentLocation);
+		mover = new Mover(this);
+		locationChoiceBuilder = new LocationChoiceBuilder(allLocations, mover);
 
-		
+		nextDay(currentLocation);
 	}
 
 	public void nextDay(Location newLocation){
 		currentDay++;
 		currentLocation = newLocation;
 
-		Mover mover = new Mover(this);
-		Day day = new Day(currentDay, currentLocation, mover, allLocations);
+		Day day = new Day(currentDay, currentLocation, locationChoiceBuilder);
 		day.start();
 	}
 
