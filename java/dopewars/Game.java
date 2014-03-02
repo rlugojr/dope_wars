@@ -3,30 +3,38 @@ package dopewars;
 import dopewars.Day;
 import dopewars.location.Mover;
 import dopewars.location.LocationChoiceBuilder;
+import dopewars.transactions.PurchaseBuilder;
+import dopewars.transactions.MarketChoiceBuilder;
 
 public class Game {
 
+	public int cash;
 	private String name;
 	private Location[] allLocations;
 	private Location currentLocation;
 	private int currentDay;
 	private Mover mover;
 	private LocationChoiceBuilder locationChoiceBuilder;
+	private PurchaseBuilder purchaseBuilder;
+	private MarketChoiceBuilder marketChoiceBuilder;
 
-	public Game(String playerName, Location[] locations){
+	public Game(String playerName, Location[] locations, int cash){
 		name = playerName;
 		allLocations = locations;
 		currentLocation = locations[0];
-
-		currentDay = 0;
+		this.cash = cash;
 	}
 
 	public void start(){
-		String greeting = String.format("Hi, %s!", name);
-		System.out.println(greeting);
-
+		currentDay = 0;
 		mover = new Mover(this);
 		locationChoiceBuilder = new LocationChoiceBuilder(allLocations, mover);
+
+		purchaseBuilder = new PurchaseBuilder(this);
+		marketChoiceBuilder = new MarketChoiceBuilder(purchaseBuilder);
+
+		String greeting = String.format("Hi, %s!", name);
+		System.out.println(greeting);
 
 		nextDay(currentLocation);
 	}
@@ -35,7 +43,7 @@ public class Game {
 		currentDay++;
 		currentLocation = newLocation;
 
-		Day day = new Day(currentDay, currentLocation, locationChoiceBuilder);
+		Day day = new Day(currentDay, currentLocation, locationChoiceBuilder, marketChoiceBuilder);
 		day.start();
 	}
 
