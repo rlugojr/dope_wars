@@ -5,6 +5,7 @@ import dopewars.Location;
 import dopewars.Quit;
 import dopewars.location.LocationChoiceBuilder;
 import dopewars.transactions.MarketChoiceBuilder;
+import dopewars.transactions.LoanPayback;
 import cli.Question;
 import cli.Answer;
 
@@ -39,12 +40,21 @@ public class Day{
 	}
 
 	private Answer[] getAnswers(){
+		int debt = 0;
+		if(player.debt > 0){
+			debt = 1;
+		}
 		Answer[] marketChoices = marketChoiceBuilder.getAnswers(location.market, this);
-		Answer[] allAnswers = new Answer[marketChoices.length + 2];
+		Answer[] allAnswers = new Answer[marketChoices.length + 2 + debt];
 
 		for(int i = 0; i < marketChoices.length; i++){
 			allAnswers[i] = marketChoices[i];
 		}
+
+		if(player.debt > 0){
+			allAnswers[allAnswers.length - 3] = getPaybackDebt();	
+		}
+		
 		allAnswers[allAnswers.length - 2] = locationChoice.getLocationChoice(location);
 		allAnswers[allAnswers.length - 1] = getExit();
 
@@ -55,9 +65,11 @@ public class Day{
 		String dayString = String.format("Day %d", num);
 		String locationString = String.format("You are in %s.", location.name);
 		String availableCash = String.format("You have £%d", player.cash);
+		String outstandingDebt = String.format("You owe £%d", player.debt);
 		System.out.println(dayString);
 		System.out.println(locationString);
 		System.out.println(availableCash);
+		System.out.println(outstandingDebt);
 
 		outputInventory();
 		outputMarket();
@@ -76,7 +88,7 @@ public class Day{
 	private void outputMarket(){
 		System.out.println("Market:");
 		for(int i = 0; i < location.market.length; i++){
-			if(location.market[i].quantity > 0 && checkInventory(location.market[i].name)){
+			if(location.market[i].quantity > 0 || checkInventory(location.market[i].name)){
 				String productInfo = String.format("%s \t£%d\t%d", location.market[i].name, location.market[i].price, location.market[i].quantity);
 				System.out.println(productInfo);
 			}
@@ -85,7 +97,7 @@ public class Day{
 
 	private boolean checkInventory(String name){
 		for(int i = 0; i < player.inventory.length; i++){
-			if(player.inventory[i].quantity > 0){
+			if(player.inventory[i].name == name && player.inventory[i].quantity > 0){
 				return true;
 			}
 		}
@@ -100,5 +112,14 @@ public class Day{
 		exit.effect = new Quit();
 
 		return exit;
+	}
+
+	private Answer getPaybackDebt(){
+		Answer payback = new Answer();
+		payback.code = "p";
+		payback.description = "pay off loan";
+		payback.effect = new LoanPayback(player, this);
+
+		return payback;
 	}
 }

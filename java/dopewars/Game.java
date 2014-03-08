@@ -12,7 +12,7 @@ public class Game {
 
 	public Player player;
 
-	final int MAX_DAYS = 3;
+	final int MAX_DAYS = 10;
 
 	private String name;
 	private Location[] allLocations;
@@ -48,6 +48,12 @@ public class Game {
 		currentDay++;
 		currentLocation = newLocation;
 
+		newLocation.update();
+
+		if(player.debt > 0){
+			player.debt *= 1.25;
+		}
+
 		if(currentDay < MAX_DAYS){
 			Day day = new Day(currentDay, currentLocation, locationChoiceBuilder, marketChoiceBuilder, player);
 			day.start();
@@ -57,7 +63,13 @@ public class Game {
 	}
 
 	private void end(){
+		int finishAmount = player.cash - player.debt;
 		System.out.println("GAME OVER!");
+		System.out.println(String.format("You finished with £%d", finishAmount));
+
+		if(finishAmount < 0){
+			System.out.println("Loan sharks break your legs!");
+		}
 	}
 
 }

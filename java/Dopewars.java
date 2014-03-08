@@ -20,6 +20,7 @@ public class Dopewars {
         Player player = new Player();
         player.cash = cash;
         player.inventory = getMarket();
+        player.debt = 100;
 
         Game game = new Game(input, locations, player);
         game.start();
