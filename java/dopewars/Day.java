@@ -2,6 +2,7 @@ package dopewars;
 
 import dopewars.Player;
 import dopewars.Location;
+import dopewars.Quit;
 import dopewars.location.LocationChoiceBuilder;
 import dopewars.transactions.MarketChoiceBuilder;
 import cli.Question;
@@ -39,12 +40,13 @@ public class Day{
 
 	private Answer[] getAnswers(){
 		Answer[] marketChoices = marketChoiceBuilder.getAnswers(location.market, this);
-		Answer[] allAnswers = new Answer[marketChoices.length + 1];
+		Answer[] allAnswers = new Answer[marketChoices.length + 2];
 
 		for(int i = 0; i < marketChoices.length; i++){
 			allAnswers[i] = marketChoices[i];
 		}
-		allAnswers[allAnswers.length - 1] = locationChoice.getLocationChoice(location);
+		allAnswers[allAnswers.length - 2] = locationChoice.getLocationChoice(location);
+		allAnswers[allAnswers.length - 1] = getExit();
 
 		return allAnswers;
 	}
@@ -79,5 +81,14 @@ public class Day{
 				System.out.println(productInfo);
 			}
 		}
+	}
+
+	private Answer getExit(){
+		Answer exit = new Answer();
+		exit.code = "q";
+		exit.description = "quit";
+		exit.effect = new Quit();
+
+		return exit;
 	}
 }
