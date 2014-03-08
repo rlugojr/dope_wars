@@ -1,6 +1,6 @@
 package dopewars.transactions;
 
-import dopewars.Game;
+import dopewars.Player;
 import dopewars.Day;
 import cli.Effect;
 import dopewars.Product;
@@ -9,12 +9,12 @@ import cli.ReadLine;
 public class Purchaser implements Effect{
 
 	private Product product;
-	private Game game;
+	private Player player;
 	private Day day;
 
-	public Purchaser(Product product, Game game, Day day){
+	public Purchaser(Product product, Player player, Day day){
 		this.product = product;
-		this.game = game;
+		this.player = player;
 		this.day = day;
 	}
 
@@ -27,9 +27,21 @@ public class Purchaser implements Effect{
 		String answer = reader.read();
 
 		if(isValidPurchase(answer)){
-			game.cash -= getPrice(answer);
+			player.cash -= getPrice(answer);
+			addToInventory(answer);
+			product.quantity -= Integer.parseInt(answer);
 		}
 
+		day.start();
+
+	}
+
+	private void addToInventory(String answer){
+		for(int i = 0; i < player.inventory.length; i++){
+			if(player.inventory[i].name == product.name){
+				player.inventory[i].quantity += Integer.parseInt(answer);
+			}
+		}
 	}
 
 	private boolean isValidPurchase(String answer){
@@ -58,6 +70,6 @@ public class Purchaser implements Effect{
 
 	private boolean checkPrice(String qty){
 		int price = getPrice(qty);
-		return price <= game.cash;
+		return price <= player.cash;
 	}
 }

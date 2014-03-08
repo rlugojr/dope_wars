@@ -1,4 +1,5 @@
 import dopewars.Game;
+import dopewars.Player;
 import dopewars.Product;
 import cli.ReadLine;
 import dopewars.Location;
@@ -16,7 +17,11 @@ public class Dopewars {
 
         int cash = 100;
 
-        Game game = new Game(input, locations, cash, getMarket());
+        Player player = new Player();
+        player.cash = cash;
+        player.inventory = getMarket();
+
+        Game game = new Game(input, locations, player);
         game.start();
     }
 
@@ -24,7 +29,7 @@ public class Dopewars {
         Location[] locations = new Location[3];
         locations[0] =  new Location("Downtown", getMarket());
         locations[1] = new Location("Uptown", getMarket());
-        locations[2] = new Location("Downtown", getMarket());;
+        locations[2] = new Location("Docks", getMarket());;
         return locations;
     }
 

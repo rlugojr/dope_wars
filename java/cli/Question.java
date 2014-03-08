@@ -20,8 +20,11 @@ public class Question{
 		for(int i = 0; i < answers.length; i++){
 			if(answer.equals(answers[i].code)){
 				answers[i].effect.execute();
+				return;
 			}
 		}
+
+		ask(question, answers);
 
 	}
 }

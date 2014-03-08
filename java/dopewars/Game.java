@@ -2,6 +2,7 @@ package dopewars;
 
 import dopewars.Day;
 import dopewars.Product;
+import dopewars.Player;
 import dopewars.location.Mover;
 import dopewars.location.LocationChoiceBuilder;
 import dopewars.transactions.PurchaseBuilder;
@@ -9,8 +10,7 @@ import dopewars.transactions.MarketChoiceBuilder;
 
 public class Game {
 
-	public int cash;
-	public Product[] inventory;
+	public Player player;
 
 	private String name;
 	private Location[] allLocations;
@@ -21,12 +21,11 @@ public class Game {
 	private PurchaseBuilder purchaseBuilder;
 	private MarketChoiceBuilder marketChoiceBuilder;
 
-	public Game(String playerName, Location[] locations, int cash, Product[] inventory){
+	public Game(String playerName, Location[] locations, Player player){
 		name = playerName;
 		allLocations = locations;
 		currentLocation = locations[0];
-		this.cash = cash;
-		this.inventory = inventory;
+		this.player = player;
 	}
 
 	public void start(){
@@ -34,7 +33,7 @@ public class Game {
 		mover = new Mover(this);
 		locationChoiceBuilder = new LocationChoiceBuilder(allLocations, mover);
 
-		purchaseBuilder = new PurchaseBuilder(this);
+		purchaseBuilder = new PurchaseBuilder(player);
 		marketChoiceBuilder = new MarketChoiceBuilder(purchaseBuilder);
 		
 		String greeting = String.format("Hi, %s!", name);
@@ -47,7 +46,7 @@ public class Game {
 		currentDay++;
 		currentLocation = newLocation;
 
-		Day day = new Day(currentDay, currentLocation, locationChoiceBuilder, marketChoiceBuilder);
+		Day day = new Day(currentDay, currentLocation, locationChoiceBuilder, marketChoiceBuilder, player);
 		day.start();
 	}
 
