@@ -5,6 +5,7 @@ import dopewars.Day;
 import cli.Effect;
 import dopewars.Product;
 import dopewars.transactions.Purchaser;
+import dopewars.transactions.Sale;
 
 public class PurchaseBuilder{
 
@@ -19,10 +20,17 @@ public class PurchaseBuilder{
 		this.day = day;
 	}
 	
-	public Effect getQuestion(Product product){
+	public Effect getPurchaseQuestion(Product product){
 
 		Purchaser purchaser = new Purchaser(product, player, day);
 		
 		return purchaser;
+	}
+
+	public Effect getSaleQuestion(Product product, Product[] market){
+
+		Sale sale = new Sale(product, player, day, market);
+		
+		return sale;
 	}
 }

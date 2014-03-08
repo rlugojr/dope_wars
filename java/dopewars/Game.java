@@ -34,7 +34,7 @@ public class Game {
 		locationChoiceBuilder = new LocationChoiceBuilder(allLocations, mover);
 
 		purchaseBuilder = new PurchaseBuilder(player);
-		marketChoiceBuilder = new MarketChoiceBuilder(purchaseBuilder);
+		marketChoiceBuilder = new MarketChoiceBuilder(purchaseBuilder, player);
 		
 		String greeting = String.format("Hi, %s!", name);
 		System.out.println(greeting);

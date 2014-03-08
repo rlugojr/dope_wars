@@ -23,17 +23,22 @@ public class Purchaser implements Effect{
 
 		System.out.println("How many?");
 
+
+
+		executePurchase();
+
+		day.start();
+
+	}
+
+	private void executePurchase(){
 		ReadLine reader = new ReadLine();
 		String answer = reader.read();
-
 		if(isValidPurchase(answer)){
 			player.cash -= getPrice(answer);
 			addToInventory(answer);
 			product.quantity -= Integer.parseInt(answer);
 		}
-
-		day.start();
-
 	}
 
 	private void addToInventory(String answer){
