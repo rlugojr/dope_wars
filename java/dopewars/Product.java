@@ -18,6 +18,6 @@ public class Product{
 	}
 
 	public void update(){
-		quantity = 10;
+		quantity = (int)(Math.random() * 120);
 	}
 }
