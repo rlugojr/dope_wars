@@ -16,7 +16,7 @@ public class Dopewars {
 
         int cash = 100;
 
-        Game game = new Game(input, locations, cash);
+        Game game = new Game(input, locations, cash, getMarket());
         game.start();
     }
 

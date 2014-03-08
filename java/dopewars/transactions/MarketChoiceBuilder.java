@@ -1,5 +1,6 @@
 package dopewars.transactions;
 
+import dopewars.Day;
 import dopewars.Product;
 import dopewars.transactions.PurchaseBuilder;
 import cli.Answer;
@@ -12,10 +13,14 @@ public class MarketChoiceBuilder{
 		this.purchaser = purchaser;
 	}
 
-	public Answer[] getAnswers(Product[] market){
+	public Answer[] getAnswers(Product[] market, Day day){
 
 		int productCount = countRelevantProducts(market);
 		System.out.println(String.format("market products .. : %d", productCount));
+
+
+		purchaser.addDay(day);
+
 		Answer[] answers = new Answer[productCount];
 
 		int j = 0;

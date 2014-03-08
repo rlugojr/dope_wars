@@ -34,7 +34,7 @@ public class Day{
 	}
 
 	private Answer[] getAnswers(){
-		Answer[] marketChoices = marketChoiceBuilder.getAnswers(location.market);
+		Answer[] marketChoices = marketChoiceBuilder.getAnswers(location.market, this);
 		Answer[] allAnswers = new Answer[marketChoices.length + 1];
 
 		for(int i = 0; i < marketChoices.length; i++){
