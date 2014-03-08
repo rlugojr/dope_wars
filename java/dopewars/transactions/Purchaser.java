@@ -58,6 +58,7 @@ public class Purchaser implements Effect{
 
 		if(!checkPrice(answer)){
 			System.out.println("Not enough cash!");
+			return false;
 		}
 
 		return true;		
@@ -75,6 +76,6 @@ public class Purchaser implements Effect{
 
 	private boolean checkPrice(String qty){
 		int price = getPrice(qty);
-		return price <= player.cash;
+		return (price <= player.cash);
 	}
 }

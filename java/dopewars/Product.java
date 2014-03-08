@@ -19,5 +19,13 @@ public class Product{
 
 	public void update(){
 		quantity = (int)(Math.random() * 120);
+		if(Math.random() < 0.2){
+			quantity = 0;
+		}
+
+		price = (int)(Math.random() * max);
+		if(price < min){
+			price = min;
+		}
 	}
 }

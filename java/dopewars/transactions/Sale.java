@@ -58,7 +58,15 @@ public class Sale implements Effect{
 
 	private int getPrice(String qty){
 		int quantity = Integer.parseInt(qty);
-		return quantity * product.price;
+		int price = 0;
+
+		for(int i = 0; i < market.length; i++){
+			if(market[i].name == product.name){
+				price = market[i].price;
+			}
+		}
+
+		return quantity * price;
 	}
 
 	private boolean checkQuantity(String qty){

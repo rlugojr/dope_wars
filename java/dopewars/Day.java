@@ -76,11 +76,21 @@ public class Day{
 	private void outputMarket(){
 		System.out.println("Market:");
 		for(int i = 0; i < location.market.length; i++){
-			if(location.market[i].quantity > 0){
+			if(location.market[i].quantity > 0 && checkInventory(location.market[i].name)){
 				String productInfo = String.format("%s \t£%d\t%d", location.market[i].name, location.market[i].price, location.market[i].quantity);
 				System.out.println(productInfo);
 			}
 		}
+	}
+
+	private boolean checkInventory(String name){
+		for(int i = 0; i < player.inventory.length; i++){
+			if(player.inventory[i].quantity > 0){
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private Answer getExit(){

@@ -12,6 +12,8 @@ public class Game {
 
 	public Player player;
 
+	final int MAX_DAYS = 3;
+
 	private String name;
 	private Location[] allLocations;
 	private Location currentLocation;
@@ -46,8 +48,16 @@ public class Game {
 		currentDay++;
 		currentLocation = newLocation;
 
-		Day day = new Day(currentDay, currentLocation, locationChoiceBuilder, marketChoiceBuilder, player);
-		day.start();
+		if(currentDay < MAX_DAYS){
+			Day day = new Day(currentDay, currentLocation, locationChoiceBuilder, marketChoiceBuilder, player);
+			day.start();
+		}else{
+			end();
+		}
+	}
+
+	private void end(){
+		System.out.println("GAME OVER!");
 	}
 
 }
