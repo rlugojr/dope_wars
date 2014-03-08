@@ -23,7 +23,7 @@ public class Purchaser implements Effect{
 		String answer = reader.read();
 
 		if(isValidPurchase()){
-
+			
 		}
 
 	}

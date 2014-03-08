@@ -15,6 +15,7 @@ public class MarketChoiceBuilder{
 	public Answer[] getAnswers(Product[] market){
 
 		int productCount = countRelevantProducts(market);
+		System.out.println(String.format("market products .. : %d", productCount));
 		Answer[] answers = new Answer[productCount];
 
 		int j = 0;

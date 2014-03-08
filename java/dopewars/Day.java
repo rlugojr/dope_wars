@@ -35,8 +35,12 @@ public class Day{
 
 	private Answer[] getAnswers(){
 		Answer[] marketChoices = marketChoiceBuilder.getAnswers(location.market);
-		Answer[] allAnswers = new Answer[1];
-		allAnswers[0] = locationChoice.getLocationChoice(location);
+		Answer[] allAnswers = new Answer[marketChoices.length + 1];
+
+		for(int i = 0; i < marketChoices.length; i++){
+			allAnswers[i] = marketChoices[i];
+		}
+		allAnswers[allAnswers.length - 1] = locationChoice.getLocationChoice(location);
 
 		return allAnswers;
 	}
