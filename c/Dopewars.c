@@ -1,16 +1,31 @@
 #include<stdio.h>
 
 #define MAXIMUM_DAYS 30
+#define PRODUCTS 4
 
 void startDay();
 void nextDay();
 void mainChoice();
 void moveChoice();
+void setup();
+
+typedef struct
+{
+    char *name;
+    int quantity;
+    int price;
+    int min;
+    int max;
+} Product;
 
 
 int currentDay = 1;
 int currentLocation = 0;
 char* locations[3] = { "Downtown", "Uptown", "Docks" };
+
+char* productNames[PRODUCTS] = { "Cannabis", "Heroin", "Ketamine", "Speed"};
+Product market[PRODUCTS];
+Product inventory[PRODUCTS];
 
 int main()
 {
@@ -19,9 +34,18 @@ int main()
     printf("Please enter your name : \n");
     scanf("%s", name);
     printf("Hello, %s\n", name);
-
+    setup();
     startDay();
     return 0;
+}
+
+void setup()
+{
+    int i;
+    for(i = 0; i < PRODUCTS; i++)
+    {
+
+    }
 }
 
 void startDay()
